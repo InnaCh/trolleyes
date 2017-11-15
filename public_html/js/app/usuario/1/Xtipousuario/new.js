@@ -25,29 +25,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 'use strict';
-moduloTipousuario.controller('TipousuarioEdit1Controller',
-        ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
-            function ($scope, $routeParams, $location, serverCallService, toolService, constantService, objectService) {
-                $scope.ob = "tipousuario";
-                $scope.op = "edit";
+
+moduloPedido.controller('PedidoXusuarioNew1Controller',
+        ['$scope', '$routeParams', '$location', 'serverCallService', '$filter', '$uibModal', 'sessionService', '$route', 'toolService', 'constantService', 'objectService',
+            function ($scope, $routeParams, $location, serverCallService, $filter, $uibModal, sessionService, $route, toolService, constantService, objectService) {
+                $scope.ob = "pedido";
+                $scope.op = "newXusuario";
                 $scope.profile = 1;
                 //---
                 $scope.status = null;
                 $scope.debugging = constantService.debugging();
-                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
+                //$scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
                 //---
-               
-                $scope.id = $routeParams.id;
+                $scope.xob = "usuario";
+                $scope.xid = $routeParams.id_usuario;
+                //--
+                $scope.bean = {};
+                $scope.bean.obj_usuario = {"id": $scope.xid};
                 //---
                 $scope.objectService = objectService;
                 //---
-                serverCallService.getOne($scope.ob, $scope.id).then(function (response) {
+                serverCallService.getOne($scope.xob, $scope.xid).then(function (response) {
                     if (response.status == 200) {
                         if (response.data.status == 200) {
                             $scope.status = null;
-                            $scope.bean = response.data.json;
+                            $scope.usuariobean = response.data.json;
                         } else {
                             $scope.status = "Error en la recepción de datos del servidor";
                         }
@@ -57,13 +60,15 @@ moduloTipousuario.controller('TipousuarioEdit1Controller',
                 }).catch(function (data) {
                     $scope.status = "Error en la recepción de datos del servidor";
                 });
+                //--
                 $scope.save = function () {
                     var jsonToSend = {json: JSON.stringify(toolService.array_identificarArray($scope.bean))};
                     serverCallService.set($scope.ob, jsonToSend).then(function (response) {
                         if (response.status == 200) {
                             if (response.data.status == 200) {
                                 $scope.response = response;
-                                $scope.status = "El registro con id=" + $scope.id + " se ha modificado.";
+                                $scope.status = "El registro se ha creado con id=" + response.data.json;
+                                $scope.bean.id = response.data.json;
                             } else {
                                 $scope.status = "Error en la recepción de datos del servidor";
                             }
@@ -83,3 +88,4 @@ moduloTipousuario.controller('TipousuarioEdit1Controller',
                 };
             }
         ]);
+

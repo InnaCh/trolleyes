@@ -37,7 +37,7 @@ moduloServicios.factory('objectService', function () {
                     return 'fa fa-user-o';
                     break;              
                 case "pedido":
-                    return 'fa fa-sticky-note-o ';
+                    return 'fa fa-sticky-note-o';
                     break;   
                  case "producto":
                     return 'fa fa-shopping-bag';
