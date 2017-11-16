@@ -27,7 +27,7 @@
  */
 'use strict';
 
-moduloPedido.controller('PedidoXusuarioNew1Controller',
+moduloTipousuario.controller('PedidoXusuarioNew1Controller',
         ['$scope', '$routeParams', '$location', 'serverCallService', '$filter', '$uibModal', 'sessionService', '$route', 'toolService', 'constantService', 'objectService',
             function ($scope, $routeParams, $location, serverCallService, $filter, $uibModal, sessionService, $route, toolService, constantService, objectService) {
                 $scope.ob = "pedido";

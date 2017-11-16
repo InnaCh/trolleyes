@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 'use strict';
-moduloUsuario.controller('ProductoPList1Controller',
+moduloProducto.controller('ProductoPList1Controller',
         ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
             function ($scope, $routeParams, $location, serverCallService, toolService, constantService, objectService) {
                 $scope.ob = "producto";

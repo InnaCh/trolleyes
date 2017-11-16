@@ -27,19 +27,17 @@
  */
 'use strict';
 
-moduloTipousuario.controller('TipousuarioNew1Controller',
+moduloProducto.controller('ProductoNew1Controller',
         ['$scope', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
             function ($scope, $location, serverCallService, toolService, constantService, objectService) {
-                $scope.ob = "tipousuario";
+                $scope.ob = "producto";
                 $scope.op = "new";
                 $scope.profile = 1;
                 //---
                 $scope.status = null;
                 $scope.debugging = constantService.debugging();
                 $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
-                //---
-                $scope.bean = {};
-                $scope.bean.obj_tipousuario = {"id": 0};
+              
                 //---
                 $scope.objectService = objectService;
                 //---

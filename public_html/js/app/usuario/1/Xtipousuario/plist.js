@@ -26,19 +26,19 @@
  * THE SOFTWARE.
  */
 'use strict';
-moduloPedido.controller('PedidoXusuarioPList1Controller',
+moduloUsuario.controller('UsuarioXtipousuarioPList1Controller',
         ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
             function ($scope, $routeParams, $location, serverCallService, toolService, constantService, objectService) {
-                $scope.ob = "pedido";
-                $scope.op = "plistXusuario";
+                $scope.ob = "usuario";
+                $scope.op = "plistXtipousuario";
                 $scope.profile = 1;
                 //---
                 $scope.status = null;
                 $scope.debugging = constantService.debugging();
-                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op + '/' + $routeParams.id_usuario;
+                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op + '/' + $routeParams.id_tipousuario;
                 //----
-                $scope.xob = "usuario";
-                $scope.xid = $routeParams.id_usuario;
+                $scope.xob = "tipousuario";
+                $scope.xid = $routeParams.id_tipousuario;
                 //----
                 $scope.numpage = toolService.checkDefault(1, $routeParams.page);
                 $scope.rpp = toolService.checkDefault(10, $routeParams.rpp);
@@ -47,18 +47,23 @@ moduloPedido.controller('PedidoXusuarioPList1Controller',
                 $scope.orderParams = toolService.checkEmptyString($routeParams.order);
                 $scope.filterParams = toolService.checkEmptyString($routeParams.filter);
                 //---
-                $scope.visibles = {};
+                 $scope.visibles = {};
                 $scope.visibles.id = true;
-                $scope.visibles.fecha = true;
-                $scope.visibles.id_usuario = false;
-                $scope.visibles.tiene_iva = true;
-                $scope.visibles.iva = true;
+                $scope.visibles.dni = true;
+                $scope.visibles.nombre = true;
+                $scope.visibles.primer_apellido = true;
+                $scope.visibles.segundo_apellido = true;
+                $scope.visibles.login = true;
+                $scope.visibles.email = true;
+                $scope.visibles.fecha_nacimiento = true;
+                $scope.visibles.id_tipousuario = false;
                 //--
-                $scope.filterString = null;
+                $scope.filterString = [{'name': 'dni', 'longname': 'DNI'}, {'name': 'nombre', 'longname': 'Nombre'}, {'name': 'primer_apellido', 'longname': 'Primer apellido'}, {'name': 'segundo_apellido', 'longname': 'Segundo apellido'}, {'name': 'login', 'longname': 'Login'}];
                 $scope.filterNumber = [{'name': 'id', 'longname': 'Identificador'}];
-                $scope.filterDate = [{'name': 'fecha', 'longname': 'Fecha de pedido'}];
-                $scope.filterBoolean = [{'name': 'tiene_iva', 'longname': '¿Lleva IVA el pedido?'}];
-                $scope.filterUsuario = {'name': 'id_usuario', 'longname': 'Usuario cliente', 'reference': 'usuario', 'description': ['nombre', 'primer_apellido', 'segundo_apellido']};
+                $scope.filterDate = [{'name': 'fecha_nacimiento', 'longname': 'Fecha de nacimiento'}];
+                $scope.filterBoolean = null;
+                $scope.filterTipousuario = {'name':'id_tipousuario','longname':'Tipo de usuario','reference':'tipousuario','description':['descripcion']};
+                
                 //---
                 $scope.objectService = objectService;
                 //---
