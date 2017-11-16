@@ -182,13 +182,13 @@
                                                         <td ng-show="visibles.id"><b>{{obj.id}}</b></td>
                                                         <td ng-show="visibles.descripcion"><b>{{obj.descripcion}}</b></td>                       
                                                         <td>
-                                                            <div class="btn-toolbar" role="toolbar">
-                                                                <div class="btn-group">
-                                                                    <actions id="obj.id" name="ob"></actions>
-                                                                    <a class="btn btn-default btn-xs" title="Usuario" href="usuario/{{profile}}/plist/{{obj.id}}/1/10">
-                                                                        <span ng-class="objectService.getIcon('pedido')"></span>
-                                                                    </a>
-                                                                </div>
+                                                             <div class="btn-toolbar" role="toolbar">
+                                                            <div class="btn-group">
+                                                                <actions id="obj.id" name="ob"></actions>
+                                                                <a class="btn btn-default btn-xs" title="Usuarios" href="usuario/{{profile}}/plistXtipousuario/{{obj.id}}/1/10">
+                                                                    <span ng-class="objectService.getIcon('pedido')"></span>
+                                                                </a>
+                                                            </div>
                                                             </div>
                                                         </td>
                                                     </tr>

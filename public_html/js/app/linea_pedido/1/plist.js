@@ -26,19 +26,16 @@
  * THE SOFTWARE.
  */
 'use strict';
-moduloUsuario.controller('UsuarioXtipousuarioPList1Controller',
+moduloLinea.controller('LineaPList1Controller',
         ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
             function ($scope, $routeParams, $location, serverCallService, toolService, constantService, objectService) {
-                $scope.ob = "usuario";
-                $scope.op = "plistXtipousuario";
+                $scope.ob = "linea_pedido";
+                $scope.op = "plist";
                 $scope.profile = 1;
                 //---
                 $scope.status = null;
                 $scope.debugging = constantService.debugging();
-                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op + '/' + $routeParams.id_tipousuario;
-                //----
-                $scope.xob = "tipousuario";
-                $scope.xid = $routeParams.id_tipousuario;
+                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
                 //----
                 $scope.numpage = toolService.checkDefault(1, $routeParams.page);
                 $scope.rpp = toolService.checkDefault(10, $routeParams.rpp);
@@ -47,48 +44,31 @@ moduloUsuario.controller('UsuarioXtipousuarioPList1Controller',
                 $scope.orderParams = toolService.checkEmptyString($routeParams.order);
                 $scope.filterParams = toolService.checkEmptyString($routeParams.filter);
                 //---
-                 $scope.visibles = {};
-                $scope.visibles.id = true;
-                $scope.visibles.dni = true;
-                $scope.visibles.nombre = true;
-                $scope.visibles.primer_apellido = true;
-                $scope.visibles.segundo_apellido = true;
-                $scope.visibles.login = true;
-                $scope.visibles.email = true;
-                $scope.visibles.fecha_nacimiento = true;
-                $scope.visibles.id_tipousuario = false;
-                //--
-                $scope.filterString = [{'name': 'dni', 'longname': 'DNI'}, {'name': 'nombre', 'longname': 'Nombre'}, {'name': 'primer_apellido', 'longname': 'Primer apellido'}, {'name': 'segundo_apellido', 'longname': 'Segundo apellido'}, {'name': 'login', 'longname': 'Login'}];
-                $scope.filterNumber = [{'name': 'id', 'longname': 'Identificador'}];
-                $scope.filterDate = [{'name': 'fecha_nacimiento', 'longname': 'Fecha de nacimiento'}];
-                $scope.filterBoolean = null;
-                $scope.filterTipousuario = {'name':'id_tipousuario','longname':'Tipo de usuario','reference':'tipousuario','description':['descripcion']};
-                //---
                 $scope.objectService = objectService;
                 //---
+                $scope.filterString = null;
+                $scope.filterNumber = [{'name': 'id', 'longname': 'Identificador'}, {'name': 'cantidad', 'longname': 'Cantidad'}];
+                $scope.filterDate = null;
+                $scope.filterBoolean = null;
+                $scope.filterPedido = {'name':'id_pedido','longname':'Pedido','reference':'pedido','description':['descripcion']};
+                $scope.filterProducto = {'name':'id_producto','longname':'Producto','reference':'producto','description':['descripcion']};
+
+                //---
+                      $scope.visibles = {};
+                $scope.visibles.id = true;
+                $scope.visibles.cantidad = true;
+                $scope.visibles.id_pedido = true;
+                $scope.visibles.id_producto = true;
+                //---
                 function getDataFromServer() {
-                    serverCallService.getOne($scope.xob, $scope.xid).then(function (response) {
-                        if (response.status == 200) {
-                            if (response.data.status == 200) {
-                                $scope.status = null;
-                                $scope.usuariobean = response.data.json;
-                            } else {
-                                $scope.status = "Error en la recepción de datos del servidor";
-                            }
-                        } else {
-                            $scope.status = "Error en la recepción de datos del servidor";
-                        }
-                    }).catch(function (data) {
-                        $scope.status = "Error en la recepción de datos del servidor";
-                    });
-                    serverCallService.getCountX($scope.ob, $scope.xob, $scope.xid, $scope.filterParams).then(function (response) {
+                    serverCallService.getCount($scope.ob, $scope.filterParams).then(function (response) {
                         if (response.status == 200) {
                             $scope.registers = response.data.json;
                             $scope.pages = toolService.calculatePages($scope.rpp, $scope.registers);
                             if ($scope.numpage > $scope.pages) {
                                 $scope.numpage = $scope.pages;
                             }
-                            return serverCallService.getPageX($scope.ob, $scope.xob, $scope.xid, $scope.rpp, $scope.numpage, $scope.filterParams, $routeParams.order);
+                            return serverCallService.getPage($scope.ob, $scope.rpp, $scope.numpage, $scope.filterParams, $routeParams.order);
                         } else {
                             $scope.status = "Error en la recepción de datos del servidor";
                         }
@@ -102,7 +82,6 @@ moduloUsuario.controller('UsuarioXtipousuarioPList1Controller',
                         $scope.status = "Error en la recepción de datos del servidor";
                     });
                 }
-
                 $scope.doorder = function (orderField, ascDesc) {
                     $location.url($scope.url + '/' + $scope.numpage + '/' + $scope.rpp).search('filter', $scope.filterParams).search('order', orderField + ',' + ascDesc);
                     return false;

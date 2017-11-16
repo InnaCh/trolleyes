@@ -26,10 +26,10 @@
  * THE SOFTWARE.
  */
 'use strict';
-moduloUsuario.controller('UsuarioView1Controller',
+moduloLinea.controller('LineaView1Controller',
         ['$scope', '$routeParams', 'serverCallService', '$location', 'constantService','objectService',
             function ($scope, $routeParams, serverCallService, $location, constantService,objectService) {
-                $scope.ob = "usuario";
+                $scope.ob = "linea_pedido";
                 $scope.op = "view";
                 $scope.profile = 1;
                 //---
