@@ -26,16 +26,19 @@
  * THE SOFTWARE.
  */
 'use strict';
-moduloLinea.controller('LineaPList1Controller',
+moduloLinea.controller('LineaXproductoPList1Controller',
         ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
             function ($scope, $routeParams, $location, serverCallService, toolService, constantService, objectService) {
                 $scope.ob = "linea_pedido";
-                $scope.op = "plist";
+                $scope.op = "plistXproducto";
                 $scope.profile = 1;
                 //---
                 $scope.status = null;
                 $scope.debugging = constantService.debugging();
-                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
+                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op + '/' + $routeParams.id_producto;
+                //----
+                $scope.xob = "producto";
+                $scope.xid = $routeParams.id_producto;
                 //----
                 $scope.numpage = toolService.checkDefault(1, $routeParams.page);
                 $scope.rpp = toolService.checkDefault(10, $routeParams.rpp);
@@ -44,28 +47,44 @@ moduloLinea.controller('LineaPList1Controller',
                 $scope.orderParams = toolService.checkEmptyString($routeParams.order);
                 $scope.filterParams = toolService.checkEmptyString($routeParams.filter);
                 //---
-                $scope.objectService = objectService;
-                //---
-                $scope.filterNumber = [{'name': 'id', 'longname': 'Identificador'}, {'name': 'cantidad', 'longname': 'Cantidad'}];
-                $scope.filterPedido = {'name': 'id_pedido', 'longname': 'Pedido', 'reference': 'pedido', 'description': ['descripcion']};
-                $scope.filterProducto = {'name': 'id_producto', 'longname': 'Producto', 'reference': 'producto', 'description': ['descripcion']};
-
-                //---
                 $scope.visibles = {};
                 $scope.visibles.id = true;
-                $scope.visibles.cantidad = true;
-                $scope.visibles.id_pedido = true;
-                $scope.visibles.id_producto = true;
+                $scope.visibles.fecha = true;
+                $scope.visibles.id_usuario = false;
+                $scope.visibles.tiene_iva = true;
+                $scope.visibles.iva = true;
+                //--
+                $scope.filterString = null;
+                $scope.filterNumber = [{'name': 'id', 'longname': 'Identificador'}];
+                $scope.filterDate = [{'name': 'fecha', 'longname': 'Fecha de pedido'}];
+                $scope.filterBoolean = [{'name': 'tiene_iva', 'longname': '¿Lleva IVA el pedido?'}];
+                $scope.filterUsuario = {'name': 'id_usuario', 'longname': 'Usuario cliente', 'reference': 'usuario', 'description': ['nombre', 'primer_apellido', 'segundo_apellido']};
+                //---
+                $scope.objectService = objectService;
                 //---
                 function getDataFromServer() {
-                    serverCallService.getCount($scope.ob, $scope.filterParams).then(function (response) {
+                    serverCallService.getOne($scope.xob, $scope.xid).then(function (response) {
+                        if (response.status == 200) {
+                            if (response.data.status == 200) {
+                                $scope.status = null;
+                                $scope.usuariobean = response.data.json;
+                            } else {
+                                $scope.status = "Error en la recepción de datos del servidor";
+                            }
+                        } else {
+                            $scope.status = "Error en la recepción de datos del servidor";
+                        }
+                    }).catch(function (data) {
+                        $scope.status = "Error en la recepción de datos del servidor";
+                    });
+                    serverCallService.getCountX($scope.ob, $scope.xob, $scope.xid, $scope.filterParams).then(function (response) {
                         if (response.status == 200) {
                             $scope.registers = response.data.json;
                             $scope.pages = toolService.calculatePages($scope.rpp, $scope.registers);
                             if ($scope.numpage > $scope.pages) {
                                 $scope.numpage = $scope.pages;
                             }
-                            return serverCallService.getPage($scope.ob, $scope.rpp, $scope.numpage, $scope.filterParams, $routeParams.order);
+                            return serverCallService.getPageX($scope.ob, $scope.xob, $scope.xid, $scope.rpp, $scope.numpage, $scope.filterParams, $routeParams.order);
                         } else {
                             $scope.status = "Error en la recepción de datos del servidor";
                         }
@@ -79,6 +98,7 @@ moduloLinea.controller('LineaPList1Controller',
                         $scope.status = "Error en la recepción de datos del servidor";
                     });
                 }
+
                 $scope.doorder = function (orderField, ascDesc) {
                     $location.url($scope.url + '/' + $scope.numpage + '/' + $scope.rpp).search('filter', $scope.filterParams).search('order', orderField + ',' + ascDesc);
                     return false;
