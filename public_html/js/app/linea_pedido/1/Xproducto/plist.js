@@ -35,7 +35,7 @@ moduloLinea.controller('LineaXproductoPList1Controller',
                 //---
                 $scope.status = null;
                 $scope.debugging = constantService.debugging();
-                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op + '/' + $routeParams.id_producto;
+                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op + '/' + $routeParams.id_usuario;
                 //----
                 $scope.xob = "producto";
                 $scope.xid = $routeParams.id_producto;
@@ -49,16 +49,15 @@ moduloLinea.controller('LineaXproductoPList1Controller',
                 //---
                 $scope.visibles = {};
                 $scope.visibles.id = true;
-                $scope.visibles.fecha = true;
-                $scope.visibles.id_usuario = false;
-                $scope.visibles.tiene_iva = true;
-                $scope.visibles.iva = true;
+                $scope.visibles.cantidad = true;
+                $scope.visibles.id_pedido = true;
+                $scope.visibles.id_producto = true;
+                
                 //--
                 $scope.filterString = null;
-                $scope.filterNumber = [{'name': 'id', 'longname': 'Identificador'}];
-                $scope.filterDate = [{'name': 'fecha', 'longname': 'Fecha de pedido'}];
-                $scope.filterBoolean = [{'name': 'tiene_iva', 'longname': '¿Lleva IVA el pedido?'}];
-                $scope.filterUsuario = {'name': 'id_usuario', 'longname': 'Usuario cliente', 'reference': 'usuario', 'description': ['nombre', 'primer_apellido', 'segundo_apellido']};
+                $scope.filterNumber = [{'name': 'id', 'longname': 'Identificador'},{'name': 'cantidad', 'longname': 'Cantidad'}];
+                $scope.filterPedido = {'name': 'id_pedido', 'longname': 'Pedido', 'reference': 'pedido', 'description': ['id', 'iva']};
+                $scope.filterProducto = {'name': 'id_producto', 'longname': 'Producto', 'reference': 'producto', 'description': ['id', 'descripcion']};
                 //---
                 $scope.objectService = objectService;
                 //---
@@ -67,7 +66,7 @@ moduloLinea.controller('LineaXproductoPList1Controller',
                         if (response.status == 200) {
                             if (response.data.status == 200) {
                                 $scope.status = null;
-                                $scope.usuariobean = response.data.json;
+                                $scope.productobean = response.data.json;
                             } else {
                                 $scope.status = "Error en la recepción de datos del servidor";
                             }
@@ -109,5 +108,4 @@ moduloLinea.controller('LineaXproductoPList1Controller',
                 getDataFromServer();
             }
         ]);
-
 

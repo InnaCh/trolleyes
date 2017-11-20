@@ -29,8 +29,8 @@
 'use strict';
 
 moduloTipousuario.controller('TipousuarioSelection1Controller',
-        ['$scope', '$uibModalInstance', 'serverCallService', 'toolService',
-            function ($scope, $modalInstance, serverCallService, toolService) {
+        ['$scope', '$uibModalInstance', 'serverCallService', 'toolService', 'objectService',
+            function ($scope, $modalInstance, serverCallService, toolService, objectService) {
                 $scope.ob = 'tipousuario';
                 $scope.op = "selection";
                 //---
@@ -50,6 +50,8 @@ moduloTipousuario.controller('TipousuarioSelection1Controller',
 
                 $scope.filterString = [{'name': 'descripcion', 'longname': 'Descripción'}];
                 $scope.filterNumber = [{'name': 'id', 'longname': 'Identificador'}];
+                
+                $scope.objectService = objectService;
 
                 $scope.closeForm = function (id) {
                     $modalInstance.close(id);
